@@ -1,4 +1,4 @@
-describe( 'AppCtrl', function() {
+/*describe( 'AppCtrl', function() {
   describe( 'isCurrentUrl', function() {
     var AppCtrl, $location, $scope;
 
@@ -14,4 +14,4 @@ describe( 'AppCtrl', function() {
       expect( AppCtrl ).toBeTruthy();
     }));
   });
-});
+});*/

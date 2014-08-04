@@ -25,6 +25,12 @@ module.exports = function ( grunt ) {
   var userConfig = require( './build.config.js' );
 
   /**
+   *  Replace "flatten: true" (Workaround)
+   * @type {exports}
+   */
+  var path = require('path');
+
+  /**
    * This is the configuration object Grunt uses to give each plugin its 
    * instructions.
    */
@@ -115,7 +121,10 @@ module.exports = function ( grunt ) {
             dest: '<%= build_dir %>/assets/',
             cwd: '.',
             expand: true,
-            flatten: true
+            //flatten: true
+            rename: function(dest, src) {
+                return dest + path.basename(path.dirname(src)) + '/' + path.basename(src);
+            }
           }
        ]   
       },
@@ -372,7 +381,7 @@ module.exports = function ( grunt ) {
           '<%= build_dir %>/src/**/*.js',
           '<%= html2js.common.dest %>',
           '<%= html2js.app.dest %>',
-          '<%= vendor_files.css %>',
+          //'<%= vendor_files.css %>',
           '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
         ]
       },
@@ -600,7 +609,7 @@ module.exports = function ( grunt ) {
     });
 
     grunt.file.copy('src/index.html', this.data.dir + '/index.html', { 
-      process: function ( contents, path ) {
+      process: function ( contents ) {
         return grunt.template.process( contents, {
           data: {
             scripts: jsFiles,
@@ -621,7 +630,7 @@ module.exports = function ( grunt ) {
     var jsFiles = filterForJS( this.filesSrc );
     
     grunt.file.copy( 'karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', { 
-      process: function ( contents, path ) {
+      process: function ( contents ) {
         return grunt.template.process( contents, {
           data: {
             scripts: jsFiles
